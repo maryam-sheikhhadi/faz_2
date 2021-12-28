@@ -110,7 +110,7 @@ while True:
                 if y == 1:
                     # receiver = input('Enter username of receiver?\n>>>')
                     massage = input('write your massage:\n>>>')
-                    Draft.write_draft_massage(path_draft, user.username, massage)
+                    Draft.write_draft_massage(path_draft, massage)
                     print('I saved your message in your draft box:)')
                 #2: write a massage and sent it
                 elif y == 2:
