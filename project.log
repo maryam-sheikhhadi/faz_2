@@ -1,0 +1,11 @@
+
+2021-12-28 13:22:13,582 ::INFO - log_handler - signup_singin.py - __init__ - maryam94 registerd
+2021-12-28 13:22:39,329 ::INFO - log_handler - signup_singin.py - __init__ - maryam94 registerd
+2021-12-28 13:25:46,125 ::INFO - log_handler - signup_singin.py - __init__ - maryam94 registerd
+2021-12-28 13:26:26,516 ::INFO - log_handler - main.py - <module> - maryam94 loged out
+2021-12-28 13:26:49,697 ::INFO - log_handler - signup_singin.py - __init__ - tara1995 registerd
+2021-12-28 13:27:03,216 ::INFO - log_handler - signup_singin.py - __init__ - tara1995 registerd
+2021-12-28 13:27:44,624 ::INFO - log_handler - user_directory.py - write_massage_and_send - tara1995 sent massage
+2021-12-28 13:28:49,119 ::INFO - log_handler - user_directory.py - seen_massage - tara1995 seen welcome massage
+2021-12-28 13:29:24,053 ::INFO - log_handler - user_directory.py - write_massage_and_send - tara1995 sent massage
+2021-12-28 13:29:24,059 ::INFO - log_handler - user_directory.py - send_draft_massage - tara1995 sent massage
