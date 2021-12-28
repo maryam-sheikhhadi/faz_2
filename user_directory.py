@@ -12,7 +12,6 @@ class Box:
 
     @staticmethod
     def display(file_path):
-
         df = pd.read_csv(file_path)
         pd.set_option('display.max_rows', None)
         pd.set_option('display.max_columns', None)
@@ -35,32 +34,28 @@ class Inbox(Box):
         # a is dataframe of receiver inbox
         # index is index of selected massage
         @staticmethod
-        def seen_massage(index, a):
+        def seen_massage(index, a,username):
             sender = a.iloc[index, 2]
             a.at[index, 'is_seen'] = True
-            df_sender_sent_box = Box.display(f'users_info\\{sender}\sent.csv')
-            df_sender_sent_box.at[index, 'is_seen'] = True
-
+            # df_sender_sent_box = Box.display(f'users_info\\{sender}\sent.csv')
+            try:
+                df_sender_sent_box = pd.read_csv(f'users_info\\{sender}\sent.csv')
+                df_sender_sent_box.at[index, 'is_seen'] = True
+            except:
+                print('massanger does not have file')
+                logger.info(f'{username} seen welcome massage')
 
 class Draft(Box):
 
     @staticmethod
-    def write_draft_massage(path_draft, receiver, massage):
+    def write_draft_massage(path_draft, massage):
         a = FileHandler(path_draft)
-        a.write({'Message': massage, 'time': Box.get_time(), 'receiver': receiver, 'is_seen': False})
+        a.write({'Message': massage, 'time': Box.get_time()})
 
     @staticmethod
-    def send_draft_massage(sender, index, df_draft_sender):
-        selected = df_draft_sender[index]
-        receiver = df_draft_sender.get_value(index, 'receiver')
-        path_inbox_receiver = f'users_info\\{receiver}\inbox.csv'
-        df_inbox_receiver = pd.read_csv(path_inbox_receiver)
-        df_new_inbox_receiver = df_inbox_receiver.append(selected, ignore_index=True)
-        df_new_inbox_receiver.to_csv(path_inbox_receiver, index=False)
-        path_sent_box_sender = f'users_info\\{sender}\sent.csv'
-        df_sent_box_sender = pd.read_csv(path_sent_box_sender)
-        df_new_sent_box_sender = df_sent_box_sender.append(selected, ignore_index=True)
-        df_new_sent_box_sender.to_csv(path_sent_box_sender, index=False)
+    def send_draft_massage(sender, index,receiver, df_draft_sender):
+        massage = df_draft_sender.iloc[index,0]
+        Sent.write_massage_and_send(sender,receiver,massage)
         df_draft_sender.drop([index])
         path_draft_box_sender = f'users_info\\{sender}\draft.csv'
         df_draft_sender.to_csv(path_draft_box_sender, index=False)

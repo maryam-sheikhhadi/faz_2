@@ -4,12 +4,12 @@ import pandas as pd
 from hashutils import make_pw_hash
 from log_handler import *
 
+
 class User:
     def __init__(self, username, password):
         self.username = username
         self.pw_hash = make_pw_hash(password)
         logger.info(f'{self.username} registerd')
-
 
     @staticmethod
     def valid_username(username):
@@ -53,17 +53,19 @@ class User:
         print(os.getcwd())
         os.chdir('../../../update_project')
 
-    def log_in(self, lst_info):
-        for i in lst_info:
-            if self.username == i['username'] and self.pw_hash == i['password']:
-                print(f'dear {self.username}! you are log in successfully:)')
-                logger.info(f'{self.username} loged in')
+    @staticmethod
+    def log_in(username, password, df_info):
+        for i in range(df_info.shape[0]):
+            if username == df_info.iloc[i,0] and password == df_info.iloc[i,1]:
+                print(f'dear {username}! you are log in successfully:)')
                 return True
-            elif self.username == i['username'] or self.pw_hash == i['password']:
+            elif username == df_info.iloc[i,0] or password == df_info.iloc[i,1]:
                 print('your username or password is wrong:(')
+                continue
             else:
                 print("this account doesn't exists! you can sign up:)")
-            return False
+                continue
+        return False
 
     def __str__(self):
         return f"{self.__dict__}"

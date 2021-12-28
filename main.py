@@ -1,3 +1,5 @@
+import pandas as pd
+
 from file import FileHandler
 from signup_singin import User
 
@@ -55,7 +57,8 @@ while True:
         username = input('enter your username:')
         password = input('enter your password:')
         user = User(username, password)
-        result = user.log_in(list_info)
+        df_info = pd.read_csv('info.csv')
+        result = user.log_in(user.username, user.pw_hash, df_info)
 
         if result:
             path_inbox = f'users_info\\{user.username}\inbox.csv'
@@ -105,9 +108,9 @@ while True:
                                 \n9: reply the massage\n10: forward a massage\n11: log out\n>>>"""))
                 #1: write a draft message
                 if y == 1:
-                    receiver = input('Enter username of receiver?\n>>>')
+                    # receiver = input('Enter username of receiver?\n>>>')
                     massage = input('write your massage:\n>>>')
-                    Draft.write_draft_massage(path_draft, receiver, massage)
+                    Draft.write_draft_massage(path_draft, user.username, massage)
                     print('I saved your message in your draft box:)')
                 #2: write a massage and sent it
                 elif y == 2:
@@ -119,14 +122,15 @@ while True:
                 elif y == 3:
                     a = Box.display(path_draft)
                     index = int(input('enter number of massage that you want to sent:\n>>>'))
-                    Draft.send_draft_massage(user.username, index, a.df)
+                    receiver = input('Enter username of receiver?\n>>>')
+                    Draft.send_draft_massage(user.username, index,receiver, a)
                     print('I sent your message from your draft massage:)')
                 #4: check inbox and read a massage
                 elif y == 4:
                     a = Box.display(path_inbox)
                     index = int(input('which massage you want to see?\n>>>'))
                     # sender = a.get_value(index, 'sender')
-                    Inbox.seen_massage(index, a)
+                    Inbox.seen_massage(index, a,user.username)
                     print('you read selected message:)')
                 #5: edit a massage in your draft box
                 elif y == 5:
@@ -173,6 +177,7 @@ while True:
                     # massage = a.df.get_value(index, 'Message')
                     massage = a.iloc[index,0]
                     Sent.write_massage_and_send(user.username, receiver,massage)
+                #log out
                 elif y == 11:
                     y = input('are you sure you want to log out? Y or N:')
                     if y.upper() == 'N':
@@ -185,6 +190,7 @@ while True:
 
         else:
             print('somthing is wrong!')
+            logger.info(f'Unsuccessful login {user.username}')
             continue
 
 
